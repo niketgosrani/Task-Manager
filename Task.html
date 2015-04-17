@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+	<html ng-app="demoApp">
+		<head>
+		  <title>Motel Task Manager Demo</title>
+		    <script
+		    type="text/javascript"
+		    src="angular.min.js">
+		  </script>
+
+		  <script
+		    type="text/javascript"
+		    src="core.js">
+		  </script>
+
+		  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+
+		  <link rel="stylesheet" href="core.css" />
+		  </head>
+		  <body>
+		  <img src="HillPointView.png" height="150" width="300">
+		  <font color="red" size="6"><b> Welcome To Motel View Point Inn Task Manager</font>
+		  <img src="motel-logo.png" height="150" width="300">
+		  	<header class="navbar navbar-inverse navbar-static-top">
+		    <span class="navbar-brand" ng-hide="checked">Search All: 
+		    	<input class="dark" ng-model="search.$">
+		    </span>
+		    <span class="navbar-brand" ng-show="checked">Search Make: 
+		      <input class="dark" ng-model="search.make">
+		    </span>
+		    <span class="navbar-brand"><input type="checkbox" ng-model="checked"> Task only</span>   
+		  </header>
+
+		  <div class="container">
+		    <div class="col-md-4">
+		      <div class="row">
+		        <h3>Add Task</h3>
+		          <form class="form-horizontal css-form" ng-controller="taskController" ng-submit="addTask()" >
+		            <div class="form-group">
+		              <label class="col-sm-4 control-label">Task: </label>
+		              <div class="col-sm-6">
+		                <input type="text"  class="form-control" ng-model="newtask.task" required/>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label class="col-sm-4 control-label">Time (mins): </label>
+
+					<div class="inner-addon right-addon col-sm-6">
+					    <i class="glyphicon glyphicon-hourglass col-sm-3"></i>
+					    <input type="number" class="form-control" ng-model="newtask.time" required/>
+					</div>
+
+		              <!-- <div class="col-sm-8">
+		                <input type="number" ng-model="newtask.time">
+		              </div> -->
+		            </div>
+		            <div class="form-group">
+		              <div class="col-sm-offset-2 col-sm-8">
+		                <button class="btn btn-primary" type="submit">Add Task</button>
+		              </div>
+		            </div>
+		           </form>
+		          </div>
+		         </div>
+
+
+			<div class="col-md-8" ng-controller="taskListController">
+			      <div class="row">
+			        <h3> Task List</h3>
+			        <ul>
+			          <li class="list" ng-repeat="tasklist in tasks | filter:search"> 
+			        
+			            {{tasklist.task}} || {{tasklist.time}} (mins)			             
+
+			             <button class="btn btn-sm btn-danger  pull-right glyphicon glyphicon-remove-circle" 
+			                    ng-click="deleteTask(tasklist)">
+			              Delete
+			            </button>
+			            <button class="btn btn-sm btn-warning pull-right glyphicon glyphicon-pushpin"
+			                    ng-click="assignTask(tasklist)">  
+			              Assign
+			            </button>
+
+			            <select class = "pull-right" ng-options="o.name+'-'+o.role for o in employee" ng-model="tasklist.user"></select>
+
+			         </li>
+			        </ul>
+			        <div class="clearfix"></div>
+			      </div> 
+			    </div>
+			    <div class="clearfix"></div>
+
+			<hr/>
+
+			<div class="col-md-12" ng-controller="assignedTasksController">
+		      
+			  <div class="col-md-4" ng-repeat="p in employee">
+		      <h3>{{p.name}}</h3>
+		      {{p.role}}
+		      <ul>
+		        <li class="list" ng-repeat="tasklist in p.tasks" >
+		          {{ tasklist.task }} || {{ tasklist.time}}
+
+		          <button ng-if="tasklist.done!=true" class="btn btn-sm btn-success pull-right glyphicon glyphicon-remove-circle" 
+			                    ng-click="completetask(p,tasklist)">
+			              Complete
+			      </button>
+
+			      <button ng-if="tasklist.done==true" class="btn btn-sm btn-success  pull-right glyphicon glyphicon-thumbs-up">
+			              Completed
+			      </button>
+
+		        </li>
+		      </ul>
+
+		      <h4>Total Time : {{p.total | number}}</h4>
+
+		      </div>
+
+		    </div>
+
+		</body>
+	</html>
